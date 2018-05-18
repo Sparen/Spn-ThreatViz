@@ -1,0 +1,13 @@
+*~
+/target/*
+.DS_Store
+**/.DS_Store
+*.iml
+.idea
+.idea/*
+.project
+.project/*
+.classpath
+.settings
+*.db
+dependency-reduced-pom.xml
