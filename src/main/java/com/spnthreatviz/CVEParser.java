@@ -55,6 +55,7 @@ public class CVEParser {
             JsonObject cve = cveElement.getAsJsonObject(); //convert array element to JsonObject
             try {
                 CVEObject cveObj = parseCVE(cve); //parse to a POJO
+                //System.out.println(cveObj); //Debug Print Statement
                 //Handle Database entry
             } catch (STVException.CVEParsingException e) {
                 //Note that there was an error when parsing, but continue onwards with the rest of the entries.
