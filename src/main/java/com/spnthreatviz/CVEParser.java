@@ -35,7 +35,7 @@ public class CVEParser {
      * @param input the JSON string to use as input.
      * @exception STVException.CVEParsingException on missing CVE_Items field in provided JSON input.
      */
-    public JsonArray getCVEItems(String input) throws STVException.CVEParsingException {
+    public JsonArray getCVEItemsAsArray(String input) throws STVException.CVEParsingException {
         JsonParser parser = new JsonParser();
         JsonObject cveRootObj = parser.parse(input).getAsJsonObject(); //Turn input into a JsonObject
         JsonElement parsedCVEItems = cveRootObj.get("CVE_Items");
@@ -50,7 +50,7 @@ public class CVEParser {
      * @param cveItems the JsonArray of cveItems to be parsed and added to the database.
      * @exception STVException.CVEParsingException on missing fields in provided JSON input.
      */
-    public void getCVEItems(JsonArray cveItems) throws STVException.CVEParsingException  {
+    public void loadCVEItemsToObjects(JsonArray cveItems) throws STVException.CVEParsingException  {
         for (JsonElement cveElement : cveItems) {
             JsonObject cve = cveElement.getAsJsonObject(); //convert array element to JsonObject
             try {

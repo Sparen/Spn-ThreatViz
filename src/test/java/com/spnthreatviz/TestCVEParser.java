@@ -40,7 +40,7 @@ public class TestCVEParser {
     public void testGetCVEItems_PEX1() throws STVException.CVEParsingException { //tests getCVEItems
         thrown.expect(STVException.CVEParsingException.class);
         String sample1 = "{}";
-        cvep.getCVEItems(sample1);
+        cvep.getCVEItemsAsArray(sample1);
     }
 
     @Test
