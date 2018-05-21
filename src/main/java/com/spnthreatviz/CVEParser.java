@@ -52,6 +52,7 @@ public class CVEParser {
     /**
      * Handles parsing the important bits of a JsonObject into a meaningful CVEObject.
      * @param cveItem the JsonObject to parse and add to a CVEObject instance.
+     * @return New CVEObject containing data from the input.
      * @exception STVException.CVEParsingException on missing fields in provided JSON input.
      */
     public CVEObject parseCVE(JsonObject cveItem) throws STVException.CVEParsingException  {
