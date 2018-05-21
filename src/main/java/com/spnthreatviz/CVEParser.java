@@ -21,7 +21,7 @@ public class CVEParser {
     /**
      * GSON object for parsing primitives.
      */
-    Gson gson;
+    private Gson gson;
 
     /**
      * Constructor for a CVEParser. Does nothing.
