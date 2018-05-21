@@ -6,6 +6,8 @@ Welcome to the master repository for Sparen ThreatViz, a project by Andrew Fan.
 
 Spn-ThreatViz is a data visualizer for the National Vulnerability Database's Data Feed.
 
+Note that this project is not meant for a production environment and is not meant to be used seriously; the only data actually stored is the 'current' file from May 21, 2018. In total there is over 500MB of JSON data, and this is beyond the amount of data I am willing to store in a git repo (and beyond the amount of money I'm willing to throw at AWS for storage for this particular application).
+
 ### Build Commands
 
 This project uses Maven and Java 1.8. If running locally, the application will launch on localhost:8080
