@@ -37,4 +37,13 @@ public class STVException {
             super(message, cause);
         }
     }
+
+    /**
+     * Exception thrown when there is an error parsing the NVD CVE files
+     */
+    public static class CVEParsingException extends Exception {
+        public CVEParsingException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
 }
