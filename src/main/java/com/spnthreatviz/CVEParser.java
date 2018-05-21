@@ -76,14 +76,19 @@ public class CVEParser {
         //To avoid exceptions, unwrap one layer at a time.
 
         //Unwrap main CVE component
-        JsonObject cve_main = cveItem.get("cve").getAsJsonObject();
-        if (cve_main == null) { throw new STVException.CVEParsingException("parseCVE: input missing cve field.", new Throwable()); }
+        JsonElement cve_main_e = cveItem.get("cve");
+        if (cve_main_e == null) { throw new STVException.CVEParsingException("parseCVE: input missing cve field.", new Throwable()); }
+        JsonObject cve_main = cve_main_e.getAsJsonObject();
 
         //Vendor, product name, and version data
-        JsonObject layer_affects = cve_main.get("affects").getAsJsonObject();
-        if (layer_affects == null) { throw new STVException.CVEParsingException("parseCVE: input missing affects field.", new Throwable()); }
-        JsonObject layer_vendor = layer_affects.get("vendor").getAsJsonObject();
-        if (layer_vendor == null) { throw new STVException.CVEParsingException("parseCVE: input missing vendor field.", new Throwable()); }
+        JsonElement layer_affects_e = cve_main.get("affects");
+        if (layer_affects_e == null) { throw new STVException.CVEParsingException("parseCVE: input missing affects field.", new Throwable()); }
+        JsonObject layer_affects = layer_affects_e.getAsJsonObject();
+
+        JsonElement layer_vendor_e = layer_affects.get("vendor");
+        if (layer_vendor_e == null) { throw new STVException.CVEParsingException("parseCVE: input missing vendor field.", new Throwable()); }
+        JsonObject layer_vendor = layer_vendor_e.getAsJsonObject();
+
         JsonArray layer_vendordata = layer_vendor.get("vendor_data").getAsJsonArray();
 
         //If vendor_data is empty for whatever reason, leave the fields as empty strings.
@@ -94,10 +99,12 @@ public class CVEParser {
             String vendor_name = layer_vendorobj.get("vendor_name").getAsString();
             toReturn.setVendor(vendor_name);
 
-            JsonObject layer_product = layer_vendorobj.get("product").getAsJsonObject();
+            JsonElement layer_product_e = layer_vendorobj.get("product");
             //Only set product name and version values if the product field exists.
             //However, do not throw an exception if it is null, as that's still technically 'valid'
-            if (layer_product != null) {
+            if (layer_product_e != null) {
+                JsonObject layer_product = layer_product_e.getAsJsonObject();
+
                 JsonArray layer_productdata = layer_product.get("product_data").getAsJsonArray();
 
                 //Like with vendor_data, we will only choose the first product in the array for simplicity, and will leave the fields as empty strings if it is empty.
@@ -107,8 +114,10 @@ public class CVEParser {
                     toReturn.setProductName(product_name);
 
                     //Handle version object.
-                    JsonObject layer_version = layer_productobj.get("version").getAsJsonObject();
-                    if (layer_version != null) {
+                    JsonElement layer_version_e = layer_productobj.get("version");
+                    if (layer_version_e != null) {
+                        JsonObject layer_version = layer_version_e.getAsJsonObject();
+
                         JsonArray version_data = layer_version.get("version_data").getAsJsonArray();
                         String[] version_values = new String[version_data.size()];
                         //Iterate over version_data and insert values into array.
@@ -123,8 +132,9 @@ public class CVEParser {
         }
 
         //Next we handle the description.
-        JsonObject layer_description = cve_main.get("description").getAsJsonObject();
-        if (layer_description != null) {
+        JsonElement layer_description_e = cve_main.get("description");
+        if (layer_description_e != null) {
+            JsonObject layer_description = layer_description_e.getAsJsonObject();
             //If it does not exist, just leave description blank.
             JsonArray layer_descriptiondata = layer_description.get("description_data").getAsJsonArray();
             //We will only use the first element.
@@ -136,12 +146,15 @@ public class CVEParser {
         }
 
         //Next we handle everything related to the impact of the vulnerability
-        JsonObject cve_impact = cveItem.get("impact").getAsJsonObject();
-        if (cve_impact == null) { throw new STVException.CVEParsingException("parseCVE: input missing impact field.", new Throwable()); }
+        JsonElement cve_impact_e = cveItem.get("impact");
+        if (cve_impact_e == null) { throw new STVException.CVEParsingException("parseCVE: input missing impact field.", new Throwable()); }
+        JsonObject cve_impact = cve_impact_e.getAsJsonObject();
         //If no baseMetric V3 exists, then leave default values
         //TODO: Potentially utilize V2, though not all fields match up perfectly
-        JsonObject layer_baseMetricV3 = cve_impact.get("baseMetricV3").getAsJsonObject();
-        if (layer_baseMetricV3 != null) {
+        JsonElement layer_baseMetricV3_e = cve_impact.get("baseMetricV3");
+        if (layer_baseMetricV3_e != null) {
+            JsonObject layer_baseMetricV3 = layer_baseMetricV3_e.getAsJsonObject();
+
             JsonObject layer_cvssv3 = layer_baseMetricV3.get("cvssV3").getAsJsonObject();
             //Extract fields
             String attackVector = layer_cvssv3.get("attackVector").getAsString();
@@ -177,8 +190,12 @@ public class CVEParser {
         String pubdate_raw = cveItem.get("publishedDate").getAsString();
         String moddate_raw = cveItem.get("lastModifiedDate").getAsString();
         //Substrings utilized for storage (YYYY-MM-DD)
-        toReturn.setPublishDate(pubdate_raw.substring(0, 10));
-        toReturn.setLastModifiedDate(moddate_raw.substring(0, 10));
+        if (pubdate_raw != null) {
+            toReturn.setPublishDate(pubdate_raw.substring(0, 10));
+        }
+        if (moddate_raw != null) {
+            toReturn.setLastModifiedDate(moddate_raw.substring(0, 10));
+        }
 
         return toReturn;
     }

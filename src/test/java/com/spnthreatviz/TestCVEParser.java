@@ -71,4 +71,36 @@ public class TestCVEParser {
         assertTrue(versiondatau1.length == 1);
         assertTrue(versiondatau1[0].equals("11.3"));
     }
+
+    //For the bad tests, we will use the following as a base:
+    //It is based off of JSONExample1_Good but DOES NOT CONTAIN UNTESTED ASPECTS.
+    //This means all the metadata, V2 threat notes, references, etc. are not present in this string.
+    //String example = "{\"cve\" : {\"affects\" : {\"vendor\" : {\"vendor_data\" : [{\"vendor_name\" : \"afcdtech\", \"product\" : {\"product_data\" : [{\"product_name\" : \"danmakanvas\", \"version\" : {\"version_data\" : [{\"version_value\" : \"2.1\"}]}}]}}]}}, \"description\" : {\"description_data\" : [{\"lang\" : \"en\", \"value\" : \"Abbreviated Description\"}]}}, \"impact\" : {\"baseMetricV3\" : {\"cvssV3\" : {\"attackVector\" : \"LOCAL\", \"attackComplexity\" : \"HIGH\", \"privilegesRequired\" : \"LOW\", \"userInteraction\" : \"REQUIRED\", \"scope\" : \"UNCHANGED\", \"confidentialityImpact\" : \"HIGH\", \"integrityImpact\" : \"HIGH\", \"availabilityImpact\" : \"NONE\", \"baseScore\" : 6.0, \"baseSeverity\" : \"MEDIUM\"}, \"exploitabilityScore\" : 0.8, \"impactScore\" : 5.2}}, \"publishedDate\" : \"2018-05-20T02:29Z\", \"lastModifiedDate\" : \"2018-05-20T16:25Z\"}";
+
+    @Test
+    public void testParseCVEBad1() throws STVException.CVEParsingException { //tests parseCVE with missing affects
+        thrown.expect(STVException.CVEParsingException.class);
+        String example = "{\"cve\" : {\"description\" : {\"description_data\" : [{\"lang\" : \"en\", \"value\" : \"Abbreviated Description\"}]}}, \"impact\" : {\"baseMetricV3\" : {\"cvssV3\" : {\"attackVector\" : \"LOCAL\", \"attackComplexity\" : \"HIGH\", \"privilegesRequired\" : \"LOW\", \"userInteraction\" : \"REQUIRED\", \"scope\" : \"UNCHANGED\", \"confidentialityImpact\" : \"HIGH\", \"integrityImpact\" : \"HIGH\", \"availabilityImpact\" : \"NONE\", \"baseScore\" : 6.0, \"baseSeverity\" : \"MEDIUM\"}, \"exploitabilityScore\" : 0.8, \"impactScore\" : 5.2}}, \"publishedDate\" : \"2018-05-20T02:29Z\", \"lastModifiedDate\" : \"2018-05-20T16:25Z\"}";
+        JsonParser parser = new JsonParser();
+        JsonObject cvejson1 = parser.parse(example).getAsJsonObject(); //Turn input into a JsonObject
+        CVEObject u1 = cvep.parseCVE(cvejson1);
+    }
+
+    @Test
+    public void testParseCVEBad2() throws STVException.CVEParsingException { //tests parseCVE with missing vendor
+        thrown.expect(STVException.CVEParsingException.class);
+        String example = "{\"cve\" : {\"affects\" : {}, \"description\" : {\"description_data\" : [{\"lang\" : \"en\", \"value\" : \"Abbreviated Description\"}]}}, \"impact\" : {\"baseMetricV3\" : {\"cvssV3\" : {\"attackVector\" : \"LOCAL\", \"attackComplexity\" : \"HIGH\", \"privilegesRequired\" : \"LOW\", \"userInteraction\" : \"REQUIRED\", \"scope\" : \"UNCHANGED\", \"confidentialityImpact\" : \"HIGH\", \"integrityImpact\" : \"HIGH\", \"availabilityImpact\" : \"NONE\", \"baseScore\" : 6.0, \"baseSeverity\" : \"MEDIUM\"}, \"exploitabilityScore\" : 0.8, \"impactScore\" : 5.2}}, \"publishedDate\" : \"2018-05-20T02:29Z\", \"lastModifiedDate\" : \"2018-05-20T16:25Z\"}";
+        JsonParser parser = new JsonParser();
+        JsonObject cvejson1 = parser.parse(example).getAsJsonObject(); //Turn input into a JsonObject
+        CVEObject u1 = cvep.parseCVE(cvejson1);
+    }
+
+    @Test
+    public void testParseCVEBad3() throws STVException.CVEParsingException { //tests parseCVE with missing impacts
+        thrown.expect(STVException.CVEParsingException.class);
+        String example = "{\"cve\" : {\"affects\" : {\"vendor\" : {\"vendor_data\" : [{\"vendor_name\" : \"afcdtech\", \"product\" : {\"product_data\" : [{\"product_name\" : \"danmakanvas\", \"version\" : {\"version_data\" : [{\"version_value\" : \"2.1\"}]}}]}}]}}, \"description\" : {\"description_data\" : [{\"lang\" : \"en\", \"value\" : \"Abbreviated Description\"}]}}, \"publishedDate\" : \"2018-05-20T02:29Z\", \"lastModifiedDate\" : \"2018-05-20T16:25Z\"}";
+        JsonParser parser = new JsonParser();
+        JsonObject cvejson1 = parser.parse(example).getAsJsonObject(); //Turn input into a JsonObject
+        CVEObject u1 = cvep.parseCVE(cvejson1);
+    }
 }
