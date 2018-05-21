@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
+import com.mysql.cj.xdevapi.JsonNumber;
 import com.mysql.cj.xdevapi.JsonString;
 
 /*
@@ -18,9 +19,16 @@ import com.mysql.cj.xdevapi.JsonString;
 public class CVEParser {
 
     /**
+     * GSON object for parsing primitives.
+     */
+    Gson gson;
+
+    /**
      * Constructor for a CVEParser. Does nothing.
      */
-    public CVEParser() {}
+    public CVEParser() {
+         gson = new Gson();
+    }
 
     /**
      * Isolates the CVE_Items array from input JsonElement for later parsing.
@@ -130,12 +138,47 @@ public class CVEParser {
         //Next we handle everything related to the impact of the vulnerability
         JsonObject cve_impact = cveItem.get("impact").getAsJsonObject();
         if (cve_impact == null) { throw new STVException.CVEParsingException("parseCVE: input missing impact field.", new Throwable()); }
+        //If no baseMetric V3 exists, then leave default values
+        //TODO: Potentially utilize V2, though not all fields match up perfectly
+        JsonObject layer_baseMetricV3 = cve_impact.get("baseMetricV3").getAsJsonObject();
+        if (layer_baseMetricV3 != null) {
+            JsonObject layer_cvssv3 = layer_baseMetricV3.get("cvssV3").getAsJsonObject();
+            //Extract fields
+            String attackVector = layer_cvssv3.get("attackVector").getAsString();
+            String attackComplexity = layer_cvssv3.get("attackComplexity").getAsString();
+            String privilegesRequired = layer_cvssv3.get("privilegesRequired").getAsString();
+            String userInteraction = layer_cvssv3.get("userInteraction").getAsString();
+            String confidentialityImpact = layer_cvssv3.get("confidentialityImpact").getAsString();
+            String integrityImpact = layer_cvssv3.get("integrityImpact").getAsString();
+            String availabilityImpact = layer_cvssv3.get("availabilityImpact").getAsString();
+            Number baseScore = layer_cvssv3.get("baseScore").getAsNumber();
+            String baseSeverity = layer_cvssv3.get("baseSeverity").getAsString();
 
+            toReturn.setAttackVector(attackVector);
+            toReturn.setAttackComplexity(attackComplexity);
+            toReturn.setPrivilegesRequired(privilegesRequired);
+            toReturn.setUserInteraction(userInteraction);
+            toReturn.setConfidentialityImpact(confidentialityImpact);
+            toReturn.setIntegrityImpact(integrityImpact);
+            toReturn.setAvailabilityImpact(availabilityImpact);
+            toReturn.setBaseScore(baseScore.floatValue());
+            toReturn.setBaseSeverity(baseSeverity);
+
+            Number exploitabilityScore = layer_baseMetricV3.get("exploitabilityScore").getAsNumber();
+            Number impactScore = layer_baseMetricV3.get("impactScore").getAsNumber();
+
+            toReturn.setExploitabilityScore(exploitabilityScore.floatValue());
+            toReturn.setImpactScore(impactScore.floatValue());
+        } else {
+            //V2 options
+        }
 
         //Finally we handle the dates
         String pubdate_raw = cveItem.get("publishedDate").getAsString();
         String moddate_raw = cveItem.get("lastModifiedDate").getAsString();
         //Substrings utilized for storage (YYYY-MM-DD)
+        toReturn.setPublishDate(pubdate_raw.substring(0, 10));
+        toReturn.setLastModifiedDate(moddate_raw.substring(0, 10));
 
         return toReturn;
     }
