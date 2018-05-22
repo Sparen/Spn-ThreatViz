@@ -1,3 +1,5 @@
+//Tutorial used: https://reactarmory.com/guides/learn-react-by-itself/react-basics
+
 //Shorthand for creating an element
 //First argument is the type (a/div/etc), second argument is element's attributes/props, remaining are children elements
 const rce = React.createElement;
