@@ -7,9 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.sql.DatabaseMetaData;
-import java.sql.Date;
 import java.util.HashMap;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,7 +30,6 @@ public class DatabaseManager {
 
     /* GENERAL NOTES
      * - Since we need a unique ID for each element and the NVD does not provide any, I am using the CVEObject.ToString as a unique ID.
-     * - 
      */
 
     /**
@@ -125,7 +122,7 @@ public class DatabaseManager {
      * @param cveID The ID of the CVE to obtain from the database.
      * @return A User Object.
      */
-    public static CVEObject getUser(String cveID) {
+    public static CVEObject getCVE(String cveID) {
         CVEObject toReturn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
