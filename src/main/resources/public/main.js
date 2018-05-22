@@ -18,8 +18,22 @@ const subbanner = rce('div',
     )
 )
 
+//Search Bar
+const searchbar = rce('div', 
+    {className: 'stvctrtxt'},
+    rce('input',
+        {type: 'text', name: 'searchbar', className: 'stvsearchbar', placeholder: 'Input Search Query here (space-delimited)'}
+    ),
+    rce('br', {}),
+    rce('input',
+        {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query'}
+    )
+)
+
+//Table
+
 //Footer
-const footer = rce('div', 
+const footer = rce('footer', 
     {className: 'stvctrtxt'},
     rce('a', {href: 'https://github.com/Sparen/Spn-ThreatViz'}, "Source Code (GitHub)")
 )
@@ -29,6 +43,7 @@ const container = rce('div',
     {},
     banner,
     subbanner,
+    searchbar,
     footer
 )
 
