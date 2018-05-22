@@ -226,12 +226,12 @@ public class DatabaseManager {
 
     }
 
-    //TODO: Allow for multiple space-delimited words in search to be utilized
+    //Note: Multiple space-delimited words should be handled in STVService with Set operations (union/intersection) on the results of this query.
     //TODO: Enable searching description
 
     /**
      * Retrieves the CVE Object associated with the provided search terms.
-     * @param search The search terms to use in the query.
+     * @param search The search term to use in the query.
      * @return An ArrayList of CVE Objects.
      */
     public static ArrayList<CVEObject> getCVESearch(String search) {

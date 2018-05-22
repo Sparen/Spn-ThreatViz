@@ -9,6 +9,9 @@ import com.google.gson.JsonArray;
 public class DataLoader {
 
     public static void main(String[] args) throws STVException.CVEParsingException {
+        //Initialize Database Manager so that if no db files exist, they are created.
+        DatabaseManager.initialize();
+        
         //Debug
         //listAllFiles(new File("."));
 
