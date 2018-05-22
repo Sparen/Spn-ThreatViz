@@ -53,5 +53,16 @@ public class STVController {
                 return Collections.EMPTY_MAP;
             }
         }, new JsonTransformer());
+
+        get(API_CONTEXT + "/search/:query", "application/json", (request, response)-> {
+            try {
+                response.status(200);
+                return stvService.getSearchResult(request.params(":query"));
+            } catch (STVException.STVServiceException ex) {
+                logger.error("STVServiceException. Failed to get search results. " + ex.getMessage());
+                response.status(500);
+                return Collections.EMPTY_MAP;
+            }
+        }, new JsonTransformer());
     }
 }

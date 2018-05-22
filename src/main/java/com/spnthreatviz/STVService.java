@@ -25,15 +25,45 @@ public class STVService {
     }
 
      /**
-     * Send a test message
-     * @param message the message to send
-     * @return message passed as input
+     * Send a test message.
+     * @param message the message to send.
+     * @return message passed as input.
      * @exception STVException.STVServiceException if generic error.
      */
     public String getTestMessage(String message) throws STVException.STVServiceException {
         System.out.println("getTestMessage: Running");
 
         return message;
+    }
+
+    /**
+     * Run a query on the database with the provided search terms and return the results.
+     * Note that if there are multiple entries with the same vendor, productName, and description, they may be treated as duplicates and not included.
+     * @param searchTerms the string delimited search terms to utilize.
+     * @return results of search query as an ArrayList.
+     * @exception STVException.STVServiceException if generic error.
+     */
+    public ArrayList<CVEObject> getSearchResult(String searchTerms) throws STVException.STVServiceException {
+        System.out.println("getSearchResult: Running");
+
+        //TODO: Sanitize input string
+
+        String[] terms = searchTerms.split("\\s+"); //delimit by spaces
+
+        ArrayList<CVEObject> outputs = new ArrayList<>(); //will hold all queries to return
+
+        //For every search term, run the search.
+        for (int i = 0; i < terms.length; i += 1) {
+            ArrayList<CVEObject> ret = DatabaseManager.getCVESearch(terms[i]);
+            //For all of those that do not exist in outputs, add to outputs. Note: utilizes CVEObject equals method
+            for (CVEObject cveo : ret) {
+                if (!outputs.contains(cveo)) {
+                    outputs.add(cveo);
+                }
+            }
+        }
+
+        return outputs;
     }
 
     /* **************** HELPER FUNCTIONS **************** */
