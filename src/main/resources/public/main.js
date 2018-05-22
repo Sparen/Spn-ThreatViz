@@ -28,11 +28,59 @@ const searchbar = rce('div',
     ),
     rce('br', {}),
     rce('input',
-        {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query'}
+        {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: runSearch()}
     )
 )
 
+//Debug Component for /test api call
+class TestMessage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: null,
+            isLoaded: false,
+            output: ""
+        };
+    }
+
+    componentDidMount() {
+    fetch("/api/stv/test")
+        .then(res => res.json())
+        .then(
+            (result) => {
+                this.setState({
+                    isLoaded: true,
+                    output: result
+                });
+            },
+            (error) => {
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            }
+        )
+    }
+
+    render() {
+        const { error, isLoaded, output } = this.state;
+        if (error) {
+            return rce('div', {className: 'stvctrtxt'}, "Error")
+        } else if (!isLoaded) {
+            return rce('div', {className: 'stvctrtxt'}, "Loading...")
+        } else {
+            return rce('div', {className: 'stvctrtxt'}, output)
+        }
+    }
+}
+
 //Table
+//Table Component. Takes in the pure JSON output and creates tables
+function OutputTable(props) {
+    return rce(
+        'table', {}
+    )
+}
 
 //Footer
 const footer = rce('footer', 
@@ -46,6 +94,7 @@ const container = rce('div',
     banner,
     subbanner,
     searchbar,
+    rce(TestMessage, {}),
     footer
 )
 
@@ -55,5 +104,9 @@ ReactDOM.render(
     document.getElementById('app')
 )
 
-
+//API Calls
+function runSearch() {
+    //First, get the contents of the search bar
+    //var searchbarcontents = 
+}
 
