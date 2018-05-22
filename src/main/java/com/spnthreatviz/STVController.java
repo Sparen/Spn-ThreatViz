@@ -46,7 +46,7 @@ public class STVController {
         get(API_CONTEXT + "/test", "application/json", (request, response)-> {
             try {
                 response.status(200);
-                return stvService.getTestMessage("test");
+                return stvService.getTestMessage("This is a Testing Message.");
             } catch (STVException.STVServiceException ex) {
                 logger.error("STVServiceException. Failed to get test message. " + ex.getMessage());
                 response.status(500);
