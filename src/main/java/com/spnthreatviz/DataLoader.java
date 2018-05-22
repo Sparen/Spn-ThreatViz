@@ -10,12 +10,14 @@ public class DataLoader {
 
     public static void main(String[] args) throws STVException.CVEParsingException {
         //Initialize Database Manager so that if no db files exist, they are created.
+        DatabaseManager.purge();
         DatabaseManager.initialize();
         
         //Debug
         //listAllFiles(new File("."));
 
         //Specify data files to load here
+        //It may be better to have a single file in /resources that contains newline delimited paths to all the files to load
         String filepath = "nvdcve/nvdcve-1.0-recent.json";
 
         //Load to a String
