@@ -21,6 +21,7 @@ public class STVService {
      * Constructs the STVService object for processing of basic application functions
      */
     public STVService() {
+        DatabaseManager.initialize(); //Initialize Database Manager so that it creates a database if none exists
     }
 
      /**

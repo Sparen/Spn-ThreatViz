@@ -56,7 +56,7 @@ public class CVEParser {
             try {
                 CVEObject cveObj = parseCVE(cve); //parse to a POJO
                 //System.out.println(cveObj); //Debug Print Statement
-                //Handle Database entry
+                DatabaseManager.createCVE(cveObj); //Add to SQL database
             } catch (STVException.CVEParsingException e) {
                 //Note that there was an error when parsing, but continue onwards with the rest of the entries.
                 System.out.println(e.getMessage());
