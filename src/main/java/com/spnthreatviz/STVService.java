@@ -27,13 +27,13 @@ public class STVService {
      /**
      * Send a test message
      * @param message the message to send
-     * @return true iff success.
+     * @return message passed as input
      * @exception STVException.STVServiceException if generic error.
      */
-    public Boolean getTestMessage(String message) throws STVException.STVServiceException {
-        System.out.println("logoutUser: Running");
+    public String getTestMessage(String message) throws STVException.STVServiceException {
+        System.out.println("getTestMessage: Running");
 
-        return true;
+        return message;
     }
 
     /* **************** HELPER FUNCTIONS **************** */
