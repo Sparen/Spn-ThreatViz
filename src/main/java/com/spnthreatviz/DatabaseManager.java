@@ -120,7 +120,7 @@ public class DatabaseManager {
     /**
      * Retrieves the CVE Object associated with the provided CVE ID.
      * @param cveID The ID of the CVE to obtain from the database.
-     * @return A User Object.
+     * @return A CVEObject.
      */
     public static CVEObject getCVE(String cveID) {
         CVEObject toReturn = null;
@@ -226,7 +226,74 @@ public class DatabaseManager {
 
     }
 
-    //TODO: Enable search 
+    //TODO: Allow for multiple space-delimited words in search to be utilized
+    //TODO: Enable searching description
+
+    /**
+     * Retrieves the CVE Object associated with the provided search terms.
+     * @param search The search terms to use in the query.
+     * @return An ArrayList of CVE Objects.
+     */
+    public static ArrayList<CVEObject> getCVESearch(String search) {
+        ArrayList<CVEObject> toReturn = new ArrayList<>();
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        Connection testConnection = null;
+        try {
+            // This will load the MySQL driver, each DB has its own driver
+            Class.forName("org.sqlite.JDBC");
+            // Setup the connection with the stvDB
+            testConnection = DriverManager.getConnection("jdbc:sqlite:db/stv.db");
+            pst = testConnection.prepareStatement("select * from CVE where vendor=? or productName=?");
+            pst.setString(1, search);
+            pst.setString(2, search);
+            rs = pst.executeQuery();
+            while (rs.next()) { //for every row in the returned ResultSet
+                String vendor = rs.getString("vendor");
+                String productName = rs.getString("productName");
+                String versionValues = rs.getString("versionValues");
+                String description = rs.getString("description");
+                String attackVector = rs.getString("attackVector");
+                String attackComplexity = rs.getString("attackComplexity");
+                String privilegesRequired = rs.getString("privilegesRequired");
+                String userInteraction = rs.getString("userInteraction");
+                String confidentialityImpact = rs.getString("confidentialityImpact");
+                String integrityImpact = rs.getString("integrityImpact");
+                String availabilityImpact = rs.getString("availabilityImpact");
+                float baseScore = rs.getFloat("baseScore");
+                String baseSeverity = rs.getString("baseSeverity");
+                float exploitabilityScore = rs.getFloat("exploitabilityScore");
+                float impactScore = rs.getFloat("impactScore");
+                String publishDate = rs.getString("publishDate");
+                String lastModifiedDate = rs.getString("lastModifiedDate");
+
+                //Convert versionValues back to an Array
+                String[] versionValuesString = versionValues.split("[|]");
+
+                CVEObject temp = new CVEObject(vendor, productName, versionValuesString, description, attackVector, attackComplexity, privilegesRequired, userInteraction, confidentialityImpact, integrityImpact, availabilityImpact, baseScore, baseSeverity, exploitabilityScore, impactScore, publishDate, lastModifiedDate);
+                toReturn.add(temp); //store into ArrayList
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (testConnection != null) {
+                try {
+                    testConnection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return toReturn;
+    }
     
     //----------------Database and General Code----------------//    
 
