@@ -1,0 +1,16 @@
+.stvheader {
+    font-size: 24px;
+    font-family: Arial;
+    background-color: #FFAAAA;
+    color: #4488CC;
+    text-shadow: -2px 0 #EEEEEE, 0 2px #EEEEEE, 2px 0 #EEEEEE, 0 -2px #EEEEEE;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border: 4px solid #FFCCCC;
+    text-align: center;
+}
+
+.stvctrtxt {
+    font-family: Arial;
+    text-align: center;
+}

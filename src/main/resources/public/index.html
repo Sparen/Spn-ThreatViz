@@ -5,36 +5,19 @@
     <title>Spn-ThreatViz</title>
     <meta content="Spn-ThreatViz - view threats from the NVD Data Feeds"
       name="description">
-    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://unpkg.com/react@16.0.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.development.js"></script>
+
     <meta name="keywords" content="Threat, Visualizer, NVD">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel='stylesheet' href='css/style.css'>
-
-    <!--bootstrap 3.0-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></script>
+    <link rel='stylesheet' href='style.css'>
 
 </head>
 
 <body>
-<div class="container-fluid">
-    <div class="header-div">
-        <div class="header-inner">
-            <div class="col-md-12">
-                <p class="header-text text-center">Spn-ThreatViz</p>
-            </div>
-        </div>
-    </div>
-    <div id="root"></div>
-
-    <div id="maindiv">
-    </div>
-</div>
+    <div id="app"></div>
+    <script type="module" src="main.js"></script>
 </body>
 
 </html>
