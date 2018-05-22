@@ -4,7 +4,7 @@ Welcome to the master repository for Sparen ThreatViz, a project by Andrew Fan.
 
 [![Build Status](https://travis-ci.com/Sparen/Spn-ThreatViz.svg?branch=master)](https://travis-ci.com/Sparen/Spn-ThreatViz)
 
-Spn-ThreatViz is a data visualizer for the National Vulnerability Database's Data Feed.
+Spn-ThreatViz is a data visualizer for the National Vulnerability Database's Data Feed. It features a simple REST API, a SQL database, and a mechanism for transforming the CVE JSON files into a simple Java Object, as well as (in the future) the ability to search through the provided data via special keywords (likely limited to names of companies and their products).
 
 Note that this project is not meant for a production environment and is not meant to be used seriously; the only data actually stored is the 'current' file from May 21, 2018. In total there is over 500MB of JSON data, and this is beyond the amount of data I am willing to store in a git repo (and beyond the amount of money I'm willing to throw at AWS for storage for this particular application).
 

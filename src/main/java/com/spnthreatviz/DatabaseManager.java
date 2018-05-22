@@ -225,6 +225,8 @@ public class DatabaseManager {
         return status;
 
     }
+
+    //TODO: Enable search 
     
     //----------------Database and General Code----------------//    
 
