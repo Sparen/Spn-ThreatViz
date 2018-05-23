@@ -20,15 +20,15 @@ const subbanner = rce('div',
     )
 )
 
-//Search Bar
+//Search Bar and text input
 const searchbar = rce('div', 
     {className: 'stvctrtxt'},
     rce('input',
-        {type: 'text', name: 'searchbar', className: 'stvsearchbar', placeholder: 'Input Search Query here (space-delimited)'}
+        {type: 'text', name: 'searchbar', className: 'stvsearchbar', placeholder: 'Input Search Query here (space-delimited)', id: 'searchfield'}
     ),
     rce('br', {}),
     rce('input',
-        {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: runSearch()}
+        {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: runSearch} //runSearch must be passed without () since we want to defer execution
     )
 )
 
@@ -107,6 +107,7 @@ ReactDOM.render(
 //API Calls
 function runSearch() {
     //First, get the contents of the search bar
-    //var searchbarcontents = 
+    var searchbarcontents = document.getElementById("searchfield").value;
+    //alert("Search Field is: " + searchbarcontents);
 }
 
