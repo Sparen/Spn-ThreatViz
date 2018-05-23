@@ -230,7 +230,7 @@ public class DatabaseManager {
     //TODO: Enable searching description
 
     /**
-     * Retrieves the CVE Object associated with the provided search terms.
+     * Retrieves the CVE Object associated with the provided search terms. If no term is provided, retrieves all elements.
      * @param search The search term to use in the query.
      * @return An ArrayList of CVE Objects.
      */
@@ -244,9 +244,13 @@ public class DatabaseManager {
             Class.forName("org.sqlite.JDBC");
             // Setup the connection with the stvDB
             testConnection = DriverManager.getConnection("jdbc:sqlite:db/stv.db");
-            pst = testConnection.prepareStatement("select * from CVE where vendor=? or productName=?");
-            pst.setString(1, search);
-            pst.setString(2, search);
+            if (search.equals("")) { //If empty, retrieve all
+                pst = testConnection.prepareStatement("select * from CVE");
+            } else {
+                pst = testConnection.prepareStatement("select * from CVE where vendor=? or productName=?");
+                pst.setString(1, search);
+                pst.setString(2, search);
+            }
             rs = pst.executeQuery();
             while (rs.next()) { //for every row in the returned ResultSet
                 String vendor = rs.getString("vendor");
@@ -292,6 +296,7 @@ public class DatabaseManager {
                 }
             }
         }
+        //System.out.println("Query: " + search + "; Output: " + toReturn);
         return toReturn;
     }
     

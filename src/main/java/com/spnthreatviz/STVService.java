@@ -46,9 +46,11 @@ public class STVService {
     public ArrayList<CVEObject> getSearchResult(String searchTerms) throws STVException.STVServiceException {
         System.out.println("getSearchResult: Running");
 
-        //TODO: Sanitize input string
+        //First, force lowercase to comply with CVE format and enable more consistent results
+        String lcSearchTerms = searchTerms.toLowerCase();
 
-        String[] terms = searchTerms.split("\\s+"); //delimit by spaces
+        //Delimit search terms by spaces
+        String[] terms = lcSearchTerms.split("\\s+"); //delimit by spaces
 
         ArrayList<CVEObject> outputs = new ArrayList<>(); //will hold all queries to return
 
@@ -56,6 +58,7 @@ public class STVService {
         for (int i = 0; i < terms.length; i += 1) {
             ArrayList<CVEObject> ret = DatabaseManager.getCVESearch(terms[i]);
             //For all of those that do not exist in outputs, add to outputs. Note: utilizes CVEObject equals method
+            //Note that this utilizes OR on the terms rather than AND
             for (CVEObject cveo : ret) {
                 if (!outputs.contains(cveo)) {
                     outputs.add(cveo);
@@ -65,6 +68,8 @@ public class STVService {
 
         return outputs;
     }
+
+    //TODO: Method and API call for inserting new data - Low Priority due to preloaded nature of database
 
     /* **************** HELPER FUNCTIONS **************** */
 
