@@ -39,7 +39,6 @@ class SearchComponent extends React.Component {
             isLoaded: false,
             output: []
         };
-        this.sortField = "lastModifiedDate"; //Default in practice is whatever order the database returns
         //Bind all non-React methods that access local variables
         this.runSearch = this.runSearch.bind(this);
         this.runSort = this.runSort.bind(this);
@@ -49,7 +48,8 @@ class SearchComponent extends React.Component {
     }
 
     render() {
-        const { error, isLoaded, output } = this.state;
+        let that = this; //for access within closures
+        const { error, isLoaded, output, sortField } = this.state;
         if (error) {
             return (
                 rce('div', 
@@ -85,14 +85,14 @@ class SearchComponent extends React.Component {
             //Header: Vendor, Product name, Attack Vector, Attack Complexity, Base Score, Base Severity, Publish Date, Last Mod Date
             var header = rce('thead', {},
                 rce('tr', {className: 'tablerow'},
-                    rce('th', {className: 'tableelement'}, "Vendor"),
-                    rce('th', {className: 'tableelement'}, "Product Name"),
+                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('vendor');}}, "Vendor"),
+                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('productName');}}, "Product Name"),
                     rce('th', {className: 'tableelement'}, "Attack Vector"),
                     rce('th', {className: 'tableelement'}, "Attack Complexity"),
-                    rce('th', {className: 'tableelement'}, "Base Score"),
+                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('baseScore');}}, "Base Score"),
                     rce('th', {className: 'tableelement'}, "Base Severity"),
-                    rce('th', {className: 'tableelement'}, "Publish Date"),
-                    rce('th', {className: 'tableelement'}, "Last Modification Date")
+                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('publishDate');}}, "Publish Date"),
+                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('lastModifiedDate');}}, "Last Modification Date")
                 )
             );
             var rows = [];
@@ -172,7 +172,7 @@ class SearchComponent extends React.Component {
     runSearch() {
         //First, get the contents of the search bar
         var searchbarcontents = document.getElementById("searchfield").value;
-        //alert("Search Field is: " + searchbarcontents);
+        console.log("SearchComponent.runSearch now running with search field: " + searchbarcontents);
         fetch("/api/stv/search/" + searchbarcontents)
             .then(res => res.json())
             .then(
@@ -192,10 +192,11 @@ class SearchComponent extends React.Component {
             )
     }
 
-    runSort() {
+    runSort(sortField) {
+        console.log("SearchComponent.runSort now running with sort field: " + sortField);
         //Runs sort of the current sortField
         this.setState({
-            output: sortByField(this.sortField, output)
+            output: sortByField(sortField, this.state.output)
         });
     }
 }
