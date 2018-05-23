@@ -128,13 +128,7 @@ class SearchComponent extends React.Component {
                 );
                 rows.push(rowobj1);
                 //Format version string
-                var vstring = "";
-                for (var j = 0; j < versionValues.length; j += 1) {
-                    vstring += versionValues[j];
-                    if (j != versionValues.length - 1) {
-                        vstring += "; ";
-                    }
-                }
+                var vstring = ArrayToString(versionValues);
                 var rowobj2 = rce('tr', {className: 'tablerow'},
                     rce('td', {className: 'tableelement', colSpan: '8'}, 
                         rce('p', {}, "Versions affected: " + vstring),
@@ -416,4 +410,16 @@ function swap(arr, i, j){
     var temp = arr[i];
     arr[i] = arr[j];
     arr[j] = temp;
+}
+
+//Returns Array in string form, delimited by "; "
+function ArrayToString(arr) {
+    var str = "";
+    for (var j = 0; j < arr.length; j += 1) {
+        str += arr[j];
+        if (j != arr.length - 1) {
+            str += "; ";
+        }
+    }
+    return str;
 }
