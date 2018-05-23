@@ -39,6 +39,7 @@ class SearchComponent extends React.Component {
             isLoaded: false,
             output: []
         };
+        //Bind all non-React methods that access local variables
         this.runSearch = this.runSearch.bind(this);
     }
 
@@ -199,6 +200,7 @@ class GraphComponent extends React.Component {
             isLoaded: false,
             output: ""
         };
+        //Bind all non-React methods that access local variables
     }
 
     componentDidMount() {
@@ -275,6 +277,7 @@ class AppContainer extends React.Component {
         this.state = {
             active: 'DataTable'
         };
+        //Bind all non-React methods that access local variables
         this.switchPaneDT = this.switchPaneDT.bind(this);
         this.switchPaneGR = this.switchPaneGR.bind(this);
         this.switchPaneTV = this.switchPaneTV.bind(this);
@@ -353,4 +356,39 @@ function returnNAIfEmptyString(str){
     } else {
         return str;
     }
+}
+
+//Sorts the output array by the given field in place using quick sort.
+function sortByField(field, arr, left, right) {
+    var len = arr.length;
+    var pivot;
+    var partitionIndex;
+
+    if (left < right) {
+        pivot = right; //set pivot
+        partitionIndex = sortPartition(field, arr, pivot, left, right);
+        sortByField(field, arr, left, partitionIndex - 1);
+        sortByField(field, arr, partitionIndex + 1, right);
+    }
+    return arr;
+}
+
+function sortPartition(field, arr, pivot, left, right){
+    var pivotValue = arr[pivot][field];
+    var partitionIndex = left;
+
+    for(var i = left; i < right; i++){
+        if(arr[i][field] < pivotValue){
+            swap(arr, i, partitionIndex);
+            partitionIndex++;
+        }
+    }
+    swap(arr, right, partitionIndex);
+    return partitionIndex;
+}
+
+function swap(arr, i, j){
+    var temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
 }
