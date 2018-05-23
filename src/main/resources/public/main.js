@@ -37,7 +37,7 @@ class SearchComponent extends React.Component {
         this.state = {
             error: null,
             isLoaded: false,
-            output: ""
+            output: []
         };
         this.runSearch = this.runSearch.bind(this);
     }
