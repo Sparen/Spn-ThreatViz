@@ -4,6 +4,8 @@
 //First argument is the type (a/div/etc), second argument is element's attributes/props, remaining are children elements
 const rce = React.createElement;
 
+/* ---------- Standard Site Elements ---------- */
+
 //Website banner
 const banner = rce('div', 
     {className: 'stvheader'},
@@ -19,6 +21,14 @@ const subbanner = rce('div',
         "."
     )
 )
+
+//Footer
+const footer = rce('footer', 
+    {className: 'stvctrtxt'},
+    rce('a', {href: 'https://github.com/Sparen/Spn-ThreatViz'}, "Source Code (GitHub)")
+)
+
+/* ---------- Primary Components ---------- */
 
 //Search + Table Component. Takes in the pure JSON output and creates tables
 class SearchComponent extends React.Component {
@@ -179,8 +189,34 @@ class SearchComponent extends React.Component {
     }
 }
 
+//Component showcasing data in alternate format
+class GraphComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: null,
+            isLoaded: false,
+            output: ""
+        };
+    }
+
+    componentDidMount() {
+    }
+
+    render() {
+        const { error, isLoaded, output } = this.state;
+        if (error) {
+            return rce('div', {className: 'stvctrtxt'}, "Error")
+        } else if (!isLoaded) {
+            return rce('div', {className: 'stvctrtxt'}, "This Feature has not been implemented yet.")
+        } else {
+            return rce('div', {className: 'stvctrtxt'}, "This Feature has not been implemented yet.") //replace with output
+        }
+    }
+}
+
 //Debug Component for /test api call
-class TestMessage extends React.Component {
+class TestComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -221,13 +257,7 @@ class TestMessage extends React.Component {
     }
 }
 
-//Footer
-const footer = rce('footer', 
-    {className: 'stvctrtxt'},
-    rce('a', {href: 'https://github.com/Sparen/Spn-ThreatViz'}, "Source Code (GitHub)")
-)
-
-//Main container for the application
+//Main container for the application (Old)
 const container = rce('div', 
     {},
     banner,
@@ -237,11 +267,76 @@ const container = rce('div',
     footer
 )
 
+//Main container for the application (New)
+class AppContainer extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            active: 'DataTable'
+        };
+        this.switchPaneDT = this.switchPaneDT.bind(this);
+        this.switchPaneGR = this.switchPaneGR.bind(this);
+        this.switchPaneTV = this.switchPaneTV.bind(this);
+    }
+
+    componentDidMount() {
+    }
+
+    //Originally, had one function that set w/ parameters, but JS automatically executed the switch on render
+    switchPaneDT() {
+        console.log("Switching to DataTable");
+        this.setState({
+            active: 'DataTable'
+        });
+    }
+    switchPaneGR() {
+        console.log("Switching to Graph");
+        this.setState({
+            active: 'Graph'
+        });
+    }
+    switchPaneTV() {
+        console.log("Switching to TestView");
+        this.setState({
+            active: 'TestView'
+        });
+    }
+
+    render() {
+        var active = this.state.active;
+        var panel;
+        if (active === 'DataTable') {
+            panel = rce(SearchComponent, {});
+        } else if (active === 'Graph') {
+            panel = rce(GraphComponent, {});
+        } else {
+            panel = rce(TestComponent, {});
+        }
+        return (
+            rce('div', 
+                {},
+                banner,
+                subbanner,
+                rce('div', {className: 'stvctrtxt'},
+                    rce('button', {onClick: this.switchPaneDT}, "Data Table View"),
+                    rce('button', {onClick: this.switchPaneGR}, "Graph View")
+                ),
+                rce('br', {}),
+                panel,
+                rce('br', {}),
+                footer
+            )
+        );
+     }
+};
+
 //Render the container
 ReactDOM.render(
-    container,
+    rce(AppContainer, {}),
     document.getElementById('app')
 )
+
+/* ---------- Helper Functions ---------- */
 
 function returnNAIfInvalidScore(score){
     if (score == -1) {
