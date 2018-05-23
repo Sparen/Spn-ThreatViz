@@ -21,3 +21,22 @@
     width: 80%; 
     padding: .5em 1em;
 }
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #CCCCCC;
+}
+
+th, td {
+    padding: 0px 4px 0px 8px;
+}
+
+tr:nth-child(even) {background-color: #FCFCFF;}
+tr:nth-child(odd) {background-color: #FFEEEE;}
+
+.tableelement {
+    text-align: left;
+}

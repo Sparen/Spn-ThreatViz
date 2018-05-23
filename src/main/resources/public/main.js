@@ -68,6 +68,75 @@ class SearchComponent extends React.Component {
                 )
             )
         } else {
+            //First, generate and format all the rows and contents, and create the table element to insert.
+            //Header: Vendor, Product name, Attack Vector, Attack Complexity, Base Score, Base Severity, Publish Date, Last Mod Date
+            var header = rce('thead', {},
+                rce('tr', {className: 'tablerow'},
+                    rce('th', {className: 'tableelement'}, "Vendor"),
+                    rce('th', {className: 'tableelement'}, "Product Name"),
+                    rce('th', {className: 'tableelement'}, "Attack Vector"),
+                    rce('th', {className: 'tableelement'}, "Attack Complexity"),
+                    rce('th', {className: 'tableelement'}, "Base Score"),
+                    rce('th', {className: 'tableelement'}, "Base Severity"),
+                    rce('th', {className: 'tableelement'}, "Publish Date"),
+                    rce('th', {className: 'tableelement'}, "Last Modification Date")
+                )
+            );
+            var rows = [];
+            for (var i = 0; i < output.length; i += 1) {
+                var currthreat = output[i];
+                var vendor = currthreat.vendor;
+                var productName = currthreat.productName;
+                var versionValues = currthreat.versionValues;
+                var description = currthreat.description;
+                var attackVector = currthreat.attackVector;
+                var attackComplexity = currthreat.attackComplexity;
+                var privilegesRequired = currthreat.privilegesRequired;
+                var userInteraction = currthreat.userInteraction;
+                var confidentialityImpact = currthreat.confidentialityImpact;
+                var integrityImpact = currthreat.integrityImpact;
+                var availabilityImpact = currthreat.availabilityImpact;
+                var baseScore = currthreat.baseScore;
+                var baseSeverity = currthreat.baseSeverity;
+                var exploitabilityScore = currthreat.exploitabilityScore;
+                var impactScore = currthreat.impactScore;
+                var publishDate = currthreat.publishDate;
+                var lastModifiedDate = currthreat.lastModifiedDate;
+                //First row for this entry
+                var rowobj1 = rce('tr', {className: 'tablerow'},
+                    rce('td', {className: 'tableelement'}, vendor),
+                    rce('td', {className: 'tableelement'}, productName),
+                    rce('td', {className: 'tableelement'}, attackVector),
+                    rce('td', {className: 'tableelement'}, attackComplexity),
+                    rce('td', {className: 'tableelement'}, baseScore),
+                    rce('td', {className: 'tableelement'}, baseSeverity),
+                    rce('td', {className: 'tableelement'}, publishDate),
+                    rce('td', {className: 'tableelement'}, lastModifiedDate)
+                );
+                rows.push(rowobj1);
+                //Format version string
+                var vstring = "";
+                for (var j = 0; j < versionValues.length; j += 1) {
+                    vstring += versionValues[j];
+                    if (j != versionValues.length - 1) {
+                        vstring += "; ";
+                    }
+                }
+                var rowobj2 = rce('tr', {className: 'tablerow'},
+                    rce('td', {className: 'tableelement', colSpan: '8'}, 
+                        rce('p', {}, "Versions affected: " + vstring),
+                        rce('p', {}, "Privileges Required: " + privilegesRequired + "; User Interaction Required: " + userInteraction),
+                        rce('p', {}, "Confidentiality Impact: " + confidentialityImpact + "; Integrity Impact: " + integrityImpact + "; Availability Impact: " + availabilityImpact),
+                        rce('p', {}, "Exploitability Score: " + exploitabilityScore + "; Impact Score: " + impactScore),
+                        rce('p', {}, "Description: " + description)
+                    )
+                );
+                rows.push(rowobj2);
+            }
+            var tabletoinsert = rce('table', {className: 'stvtable'},
+                header,
+                rce('tbody', {}, rows)
+            );
             return (
                 rce('div', 
                     {className: 'stvctrtxt'},
@@ -78,9 +147,9 @@ class SearchComponent extends React.Component {
                     rce('input',
                         {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: this.runSearch} //runSearch must be passed without () since we want to defer execution
                     ),
-                    rce('br', {})
+                    rce('br', {}),
                     //Generated table goes here
-                    
+                    tabletoinsert
                 )
             )
         }
