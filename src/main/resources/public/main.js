@@ -104,14 +104,14 @@ class SearchComponent extends React.Component {
                 var lastModifiedDate = currthreat.lastModifiedDate;
                 //First row for this entry
                 var rowobj1 = rce('tr', {className: 'tablerow'},
-                    rce('td', {className: 'tableelement'}, vendor),
-                    rce('td', {className: 'tableelement'}, productName),
-                    rce('td', {className: 'tableelement'}, attackVector),
-                    rce('td', {className: 'tableelement'}, attackComplexity),
-                    rce('td', {className: 'tableelement'}, baseScore),
-                    rce('td', {className: 'tableelement'}, baseSeverity),
-                    rce('td', {className: 'tableelement'}, publishDate),
-                    rce('td', {className: 'tableelement'}, lastModifiedDate)
+                    rce('td', {className: 'tableelement'}, returnNAIfEmptyString(vendor)),
+                    rce('td', {className: 'tableelement'}, returnNAIfEmptyString(productName)),
+                    rce('td', {className: 'tableelement'}, returnNAIfEmptyString(attackVector)),
+                    rce('td', {className: 'tableelement'}, returnNAIfEmptyString(attackComplexity)),
+                    rce('td', {className: 'tableelement'}, returnNAIfInvalidScore(baseScore)),
+                    rce('td', {className: 'tableelement'}, returnNAIfEmptyString(baseSeverity)),
+                    rce('td', {className: 'tableelement'}, returnNAIfEmptyString(publishDate)),
+                    rce('td', {className: 'tableelement'}, returnNAIfEmptyString(lastModifiedDate))
                 );
                 rows.push(rowobj1);
                 //Format version string
@@ -125,10 +125,10 @@ class SearchComponent extends React.Component {
                 var rowobj2 = rce('tr', {className: 'tablerow'},
                     rce('td', {className: 'tableelement', colSpan: '8'}, 
                         rce('p', {}, "Versions affected: " + vstring),
-                        rce('p', {}, "Privileges Required: " + privilegesRequired + "; User Interaction Required: " + userInteraction),
-                        rce('p', {}, "Confidentiality Impact: " + confidentialityImpact + "; Integrity Impact: " + integrityImpact + "; Availability Impact: " + availabilityImpact),
-                        rce('p', {}, "Exploitability Score: " + exploitabilityScore + "; Impact Score: " + impactScore),
-                        rce('p', {}, "Description: " + description)
+                        rce('p', {}, "Privileges Required: " + returnNAIfEmptyString(privilegesRequired) + "; User Interaction Required: " + returnNAIfEmptyString(userInteraction)),
+                        rce('p', {}, "Confidentiality Impact: " + returnNAIfEmptyString(confidentialityImpact) + "; Integrity Impact: " + returnNAIfEmptyString(integrityImpact) + "; Availability Impact: " + returnNAIfEmptyString(availabilityImpact)),
+                        rce('p', {}, "Exploitability Score: " + returnNAIfInvalidScore(exploitabilityScore) + "; Impact Score: " + returnNAIfInvalidScore(impactScore)),
+                        rce('p', {}, "Description: " + returnNAIfEmptyString(description))
                     )
                 );
                 rows.push(rowobj2);
@@ -147,6 +147,7 @@ class SearchComponent extends React.Component {
                     rce('input',
                         {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: this.runSearch} //runSearch must be passed without () since we want to defer execution
                     ),
+                    rce('br', {}),
                     rce('br', {}),
                     //Generated table goes here
                     tabletoinsert
@@ -232,6 +233,7 @@ const container = rce('div',
     banner,
     subbanner,
     rce(SearchComponent, {}),
+    rce('br', {}),
     footer
 )
 
@@ -240,3 +242,19 @@ ReactDOM.render(
     container,
     document.getElementById('app')
 )
+
+function returnNAIfInvalidScore(score){
+    if (score == -1) {
+        return "N/A";
+    } else {
+        return score;
+    }
+}
+
+function returnNAIfEmptyString(str){
+    if (str == "") {
+        return "N/A";
+    } else {
+        return str;
+    }
+}
