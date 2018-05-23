@@ -39,8 +39,10 @@ class SearchComponent extends React.Component {
             isLoaded: false,
             output: []
         };
+        this.sortField = "lastModifiedDate"; //Default in practice is whatever order the database returns
         //Bind all non-React methods that access local variables
         this.runSearch = this.runSearch.bind(this);
+        this.runSort = this.runSort.bind(this);
     }
 
     componentDidMount() {
@@ -188,6 +190,13 @@ class SearchComponent extends React.Component {
                     });
                 }
             )
+    }
+
+    runSort() {
+        //Runs sort of the current sortField
+        this.setState({
+            output: sortByField(this.sortField, output)
+        });
     }
 }
 
@@ -355,6 +364,21 @@ function returnNAIfEmptyString(str){
         return "N/A";
     } else {
         return str;
+    }
+}
+
+//Wrapper for sortByField. If array is already sorted, reverses order. Otherwise sorts using sortByField
+function sortOutputByField(field, arr) {
+    var sorted = true;
+    for (var i = 0; i < output.length - 1; i += 1) {
+        if (arr[i][field] > arr[i + 1][field]) {
+            sorted = false;
+        }
+    }
+    if (sorted) {
+        return arr.reverse();
+    } else {
+        return sortByField(field, arr, 0, arr.length);
     }
 }
 
