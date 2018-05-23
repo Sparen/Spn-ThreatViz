@@ -176,7 +176,8 @@ class SearchComponent extends React.Component {
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        output: result
+                        output: result,
+                        error: null //Reset in case errored before; this allows future queries to go through.
                     });
                 },
                 (error) => {
