@@ -20,17 +20,94 @@ const subbanner = rce('div',
     )
 )
 
-//Search Bar and text input
-const searchbar = rce('div', 
-    {className: 'stvctrtxt'},
-    rce('input',
-        {type: 'text', name: 'searchbar', className: 'stvsearchbar', placeholder: 'Input Search Query here (space-delimited)', id: 'searchfield'}
-    ),
-    rce('br', {}),
-    rce('input',
-        {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: runSearch} //runSearch must be passed without () since we want to defer execution
-    )
-)
+//Search + Table Component. Takes in the pure JSON output and creates tables
+class SearchComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: null,
+            isLoaded: false,
+            output: ""
+        };
+        this.runSearch = this.runSearch.bind(this);
+    }
+
+    componentDidMount() {
+    }
+
+    render() {
+        const { error, isLoaded, output } = this.state;
+        if (error) {
+            return (
+                rce('div', 
+                    {className: 'stvctrtxt'},
+                    rce('input',
+                        {type: 'text', name: 'searchbar', className: 'stvsearchbar', placeholder: 'Input Search Query here (space-delimited)', id: 'searchfield'}
+                    ),
+                    rce('br', {}),
+                    rce('input',
+                        {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: this.runSearch} //runSearch must be passed without () since we want to defer execution
+                    ),
+                    rce('br', {}),
+                    rce('p', {}, "There was an error with the search.")
+                )
+            )
+        } else if (!isLoaded) {
+            return (
+                rce('div', 
+                    {className: 'stvctrtxt'},
+                    rce('input',
+                        {type: 'text', name: 'searchbar', className: 'stvsearchbar', placeholder: 'Input Search Query here (space-delimited)', id: 'searchfield'}
+                    ),
+                    rce('br', {}),
+                    rce('input',
+                        {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: this.runSearch} //runSearch must be passed without () since we want to defer execution
+                    ),
+                    rce('br', {}),
+                    rce('p', {}, "Please type in your search terms in the input field and press Submit.")
+                )
+            )
+        } else {
+            return (
+                rce('div', 
+                    {className: 'stvctrtxt'},
+                    rce('input',
+                        {type: 'text', name: 'searchbar', className: 'stvsearchbar', placeholder: 'Input Search Query here (space-delimited)', id: 'searchfield'}
+                    ),
+                    rce('br', {}),
+                    rce('input',
+                        {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: this.runSearch} //runSearch must be passed without () since we want to defer execution
+                    ),
+                    rce('br', {})
+                    //Generated table goes here
+                    
+                )
+            )
+        }
+    }
+
+    runSearch() {
+        //First, get the contents of the search bar
+        var searchbarcontents = document.getElementById("searchfield").value;
+        //alert("Search Field is: " + searchbarcontents);
+        fetch("/api/stv/search/" + searchbarcontents)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        isLoaded: true,
+                        output: result
+                    });
+                },
+                (error) => {
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
+                }
+            )
+    }
+}
 
 //Debug Component for /test api call
 class TestMessage extends React.Component {
@@ -74,14 +151,6 @@ class TestMessage extends React.Component {
     }
 }
 
-//Table
-//Table Component. Takes in the pure JSON output and creates tables
-function OutputTable(props) {
-    return rce(
-        'table', {}
-    )
-}
-
 //Footer
 const footer = rce('footer', 
     {className: 'stvctrtxt'},
@@ -93,8 +162,7 @@ const container = rce('div',
     {},
     banner,
     subbanner,
-    searchbar,
-    rce(TestMessage, {}),
+    rce(SearchComponent, {}),
     footer
 )
 
@@ -103,11 +171,3 @@ ReactDOM.render(
     container,
     document.getElementById('app')
 )
-
-//API Calls
-function runSearch() {
-    //First, get the contents of the search bar
-    var searchbarcontents = document.getElementById("searchfield").value;
-    //alert("Search Field is: " + searchbarcontents);
-}
-
