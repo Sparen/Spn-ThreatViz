@@ -85,14 +85,14 @@ class SearchComponent extends React.Component {
             //Header: Vendor, Product name, Attack Vector, Attack Complexity, Base Score, Base Severity, Publish Date, Last Mod Date
             var header = rce('thead', {},
                 rce('tr', {className: 'tablerow'},
-                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('vendor');}}, "Vendor"),
-                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('productName');}}, "Product Name"),
+                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('vendor');}}, "Vendor ⇕"),
+                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('productName');}}, "Product Name ⇕"),
                     rce('th', {className: 'tableelement'}, "Attack Vector"),
                     rce('th', {className: 'tableelement'}, "Attack Complexity"),
-                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('baseScore');}}, "Base Score"),
+                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('baseScore');}}, "Base Score ⇕"),
                     rce('th', {className: 'tableelement'}, "Base Severity"),
-                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('publishDate');}}, "Publish Date"),
-                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('lastModifiedDate');}}, "Last Modification Date")
+                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('publishDate');}}, "Publish Date ⇕"),
+                    rce('th', {className: 'tableelement', onClick: function() {that.runSort('lastModifiedDate');}}, "Last Modification Date ⇕")
                 )
             );
             var rows = [];
@@ -155,6 +155,8 @@ class SearchComponent extends React.Component {
                         {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: this.runSearch} //runSearch must be passed without () since we want to defer execution
                     ),
                     rce('br', {}),
+                    rce('p', {}, "Click on ⇕ categories to sort table using them."),
+                    rce('br', {}),
                     rce('br', {}),
                     //Generated table goes here
                     tabletoinsert
@@ -190,7 +192,7 @@ class SearchComponent extends React.Component {
         console.log("SearchComponent.runSort now running with sort field: " + sortField);
         //Runs sort of the current sortField
         this.setState({
-            output: sortByField(sortField, this.state.output)
+            output: sortOutputByField(sortField, this.state.output)
         });
     }
 }
@@ -365,15 +367,18 @@ function returnNAIfEmptyString(str){
 //Wrapper for sortByField. If array is already sorted, reverses order. Otherwise sorts using sortByField
 function sortOutputByField(field, arr) {
     var sorted = true;
-    for (var i = 0; i < output.length - 1; i += 1) {
+    for (var i = 0; i < arr.length - 1; i += 1) {
         if (arr[i][field] > arr[i + 1][field]) {
             sorted = false;
         }
     }
     if (sorted) {
+        console.log("sortOutputByField: returning reversed array");
         return arr.reverse();
     } else {
-        return sortByField(field, arr, 0, arr.length);
+        console.log("sortOutputByField: now sorting.");
+        var newarr = sortByField(field, arr, 0, arr.length - 1);
+        return newarr;
     }
 }
 
@@ -393,6 +398,7 @@ function sortByField(field, arr, left, right) {
 }
 
 function sortPartition(field, arr, pivot, left, right){
+    //console.log("TEST: arr[pivot]: " + JSON.stringify(arr[pivot]));
     var pivotValue = arr[pivot][field];
     var partitionIndex = left;
 
