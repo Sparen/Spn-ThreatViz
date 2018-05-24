@@ -62,6 +62,7 @@ class SearchComponent extends React.Component {
                         {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: this.runSearch} //runSearch must be passed without () since we want to defer execution
                     ),
                     rce('br', {}),
+                    rce('p', {}, "Notes: Submitting a blank query will retrieve everything in the database. Multiple space-delimited terms will be OR'd together."),
                     rce('p', {}, "There was an error with the search.")
                 )
             )
@@ -77,7 +78,8 @@ class SearchComponent extends React.Component {
                         {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: this.runSearch} //runSearch must be passed without () since we want to defer execution
                     ),
                     rce('br', {}),
-                    rce('p', {}, "Please type in your search terms in the input field and press Submit.")
+                    rce('p', {}, "Please type in your search terms in the input field and press Submit."),
+                    rce('p', {}, "Notes: Submitting a blank query will retrieve everything in the database. Multiple space-delimited terms will be OR'd together.")
                 )
             )
         } else {
@@ -155,6 +157,7 @@ class SearchComponent extends React.Component {
                         {type: 'submit', name: 'searchsubmit', value: 'Submit Search Query', onClick: this.runSearch} //runSearch must be passed without () since we want to defer execution
                     ),
                     rce('br', {}),
+                    rce('p', {}, "Notes: Submitting a blank query will retrieve everything in the database. Multiple space-delimited terms will be OR'd together."),
                     rce('p', {}, "Click on ⇕ categories to sort table using them."),
                     rce('br', {}),
                     rce('br', {}),
