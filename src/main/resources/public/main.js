@@ -169,7 +169,11 @@ class SearchComponent extends React.Component {
         //First, get the contents of the search bar
         var searchbarcontents = document.getElementById("searchfield").value;
         console.log("SearchComponent.runSearch now running with search field: " + searchbarcontents);
-        fetch("/api/stv/search/" + searchbarcontents)
+        var apicall = "/api/stv/search/" + searchbarcontents; //Standard search by query
+        if (searchbarcontents == "") {
+            apicall = "/api/stv/searchall"; //Return all
+        }
+        fetch(apicall)
             .then(res => res.json())
             .then(
                 (result) => {
