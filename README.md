@@ -31,7 +31,6 @@ mvn -Dtest=Test* test
 Alternatively, running `mvn package` will run the tests as well. TravisCI has been setup with our application (see the badge at the top of the README)
 
 ### Known Issues and Potential Features
-• Not all entries in the cve files are searchable [Investigating]  
 • Project does not support baseMetricV2 and if baseMetricV3 is not provided, data fields are saved as N/A. [Possible Extension]  
 • JSON files to load currently hardcoded instead of loading all in directory [Possible Extension]  
 • No way to update database with new information [Possible Extension]  
