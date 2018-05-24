@@ -31,7 +31,7 @@ table, th, td {
 }
 
 th, td {
-    padding: 0px 4px 0px 8px;
+    padding: 2px 4px 2px 8px;
 }
 
 tr:nth-child(even) {background-color: #FCFCFF;}
