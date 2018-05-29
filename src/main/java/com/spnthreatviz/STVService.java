@@ -2,13 +2,9 @@ package com.spnthreatviz;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Date;
-import java.util.Random;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.regex.Pattern;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import com.google.gson.Gson;
 
