@@ -28,7 +28,7 @@ Run the tests with:
 mvn -Dtest=Test* test
 ```
 
-Alternatively, running `mvn package` will run the tests as well. TravisCI has been setup with our application (see the badge at the top of the README)
+Alternatively, running `mvn package` will run the tests as well. TravisCI has been setup with our application (see the badge at the top of the README).
 
 ### Known Issues and Potential Features
 • Project does not support baseMetricV2 and if baseMetricV3 is not provided, data fields are saved as N/A. [Possible Extension]  
