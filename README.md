@@ -30,6 +30,12 @@ mvn -Dtest=Test* test
 
 Alternatively, running `mvn package` will run the tests as well. TravisCI has been setup with our application (see the badge at the top of the README).
 
+### Demo
+
+To demo the package, it is necessary to first run DataLoader.java, and then Bootstrap.java. The former will set up the database, while the latter will setup localhost:8080 and ignite Spark Java.
+
+The `make run` Makefile command packages the project and then runs the two executables from the jar. It is recommended to use `make run` for quick and painless setup.
+
 ### Known Issues and Potential Features
 • Project does not support baseMetricV2 and if baseMetricV3 is not provided, data fields are saved as N/A. [Possible Extension]  
 • JSON files to load currently hardcoded instead of loading all in directory [Possible Extension]  
@@ -53,4 +59,10 @@ Creates documentation based off of Javadoc
 make purgedb
 ```
 Purge contents of local databases
+
+```
+make run
+```
+Package and run the application
+
 
