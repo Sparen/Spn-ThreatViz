@@ -91,7 +91,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.afcdtech.Bootstrap</mainClass>
+                                    <mainClass>com.spnthreatviz.Bootstrap</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
